@@ -32,7 +32,7 @@ jobs:
           cp web/index.html web/app.js web/style.css web/sw.js web/icon.svg web/manifest.webmanifest _site/
           cp -r src examples _site/
           touch _site/.nojekyll
-      - uses: actions/configure-pages@v5
+      - uses: actions/configure-pages@v6
       - uses: actions/upload-pages-artifact@v3
         with:
           path: _site
