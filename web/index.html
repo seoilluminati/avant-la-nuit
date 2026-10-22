@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Avant la nuit</title>
+  <meta name="description" content="Serai-je rentré avant la nuit ? Heure de départ au plus tard et point de non-retour pour vos traces GPX de rando et de vélo. Gratuit, open source, votre trace reste sur votre appareil.">
+  <meta name="theme-color" content="#1d2b4a">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="top">
+    <div class="brand">
+      <img src="icon.svg" alt="" width="32" height="32">
+      <div>
+        <h1 data-i18n="title">Avant la nuit</h1>
+        <p data-i18n="tagline">Serai-je rentré avant la nuit&nbsp;?</p>
+      </div>
+    </div>
+    <button id="lang" class="ghost" type="button" aria-label="Language">EN</button>
+  </header>
+
+  <main>
+    <section class="panel" aria-labelledby="form-title">
+      <h2 id="form-title" class="sr-only" data-i18n="settings">Réglages</h2>
+
+      <label class="drop" id="drop">
+        <input type="file" id="file" accept=".gpx,application/gpx+xml" hidden>
+        <strong data-i18n="dropTitle">Déposez une trace GPX</strong>
+        <span data-i18n="dropHint">ou touchez pour choisir un fichier. Rien n'est envoyé : tout est calculé sur votre appareil.</span>
+      </label>
+      <button id="sample" class="link" type="button" data-i18n="sample">Essayer avec un exemple</button>
+
+      <div class="grid">
+        <label><span data-i18n="start">Départ</span>
+          <input type="datetime-local" id="start" required>
+        </label>
+        <label><span data-i18n="profile">Activité</span>
+          <select id="profile">
+            <option value="hike" data-i18n="p_hike">Randonnée</option>
+            <option value="trail" data-i18n="p_trail">Trail</option>
+            <option value="road" data-i18n="p_road">Vélo de route</option>
+            <option value="gravel" data-i18n="p_gravel">Gravel</option>
+            <option value="mtb" data-i18n="p_mtb">VTT</option>
+          </select>
+        </label>
+        <label><span data-i18n="pace">Rythme</span>
+          <select id="speed">
+            <option value="0.75" data-i18n="s_075">Tranquille (−25 %)</option>
+            <option value="0.9" data-i18n="s_09">Prudent (−10 %)</option>
+            <option value="1" selected data-i18n="s_1">Normal</option>
+            <option value="1.15" data-i18n="s_115">Sportif (+15 %)</option>
+            <option value="1.3" data-i18n="s_13">Très sportif (+30 %)</option>
+          </select>
+        </label>
+        <label><span data-i18n="deadline">Rentré pour</span>
+          <select id="deadline">
+            <option value="sunset" data-i18n="d_sunset">le coucher du soleil</option>
+            <option value="dusk" data-i18n="d_dusk">la fin du crépuscule</option>
+          </select>
+        </label>
+      </div>
+      <p class="hint" data-i18n="tzHint">Heures dans le fuseau horaire de votre appareil.</p>
+    </section>
+
+    <section id="result" class="result" hidden aria-live="polite">
+      <div id="verdict" class="verdict"></div>
+      <dl class="stats" id="stats"></dl>
+      <div class="map-wrap">
+        <div id="map" role="region" aria-label="Carte"></div>
+        <ul class="legend">
+          <li><i class="sw day"></i><span data-i18n="l_day">De jour</span></li>
+          <li><i class="sw twilight"></i><span data-i18n="l_twilight">Crépuscule</span></li>
+          <li><i class="sw night"></i><span data-i18n="l_night">De nuit</span></li>
+          <li><i class="sw pnr">⛔</i><span data-i18n="l_pnr">Point de non-retour</span></li>
+        </ul>
+      </div>
+      <figure class="profile">
+        <svg id="profileSvg" role="img" aria-label="Profil" preserveAspectRatio="none"></svg>
+        <figcaption id="profileCap"></figcaption>
+      </figure>
+      <div class="water">
+        <button id="waterBtn" class="ghost" type="button" data-i18n="water">💧 Chercher les points d'eau (OpenStreetMap)</button>
+        <p class="hint" id="waterInfo" data-i18n="waterHint">Envoie seulement le rectangle de la zone à l'API Overpass, jamais votre trace.</p>
+        <ol id="waterList" class="water-list"></ol>
+      </div>
+    </section>
+
+    <section class="about">
+      <h2 data-i18n="howTitle">Comment c'est calculé</h2>
+      <p data-i18n-html="how">La vitesse dépend de la pente&nbsp;: <a href="https://fr.wikipedia.org/wiki/Fonction_de_randonn%C3%A9e_de_Tobler">fonction de Tobler</a> pour la marche, modèle à puissance constante pour le vélo, pauses incluses. Le coucher du soleil est calculé pour un horizon plat&nbsp;: en montagne, les crêtes cachent le soleil plus tôt. Le <strong>point de non-retour</strong> est le dernier endroit d'où un demi-tour vous ramène au départ avant l'heure choisie.</p>
+      <p class="warn" data-i18n="disclaimer">Une estimation, pas une garantie. Prenez toujours une frontale, de la marge, et renseignez-vous sur la météo et le terrain.</p>
+    </section>
+  </main>
+
+  <footer>
+    <a href="https://github.com/seoilluminati/avant-la-nuit" data-i18n="source">Code source (MIT)</a>
+    <span>·</span>
+    <span data-i18n="credits">Cartes © contributeurs OpenStreetMap</span>
+  </footer>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <script type="module" src="app.js"></script>
+</body>
+</html>

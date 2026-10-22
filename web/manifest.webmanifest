@@ -1,0 +1,13 @@
+{
+  "name": "Avant la nuit",
+  "short_name": "Avant la nuit",
+  "description": "Will I be back before dark? Daylight check for GPX hiking and cycling routes.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f4ef",
+  "theme_color": "#1d2b4a",
+  "icons": [
+    { "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
+  ]
+}

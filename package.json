@@ -1,0 +1,46 @@
+{
+  "name": "avant-la-nuit",
+  "version": "0.1.0",
+  "description": "Will I be back before dark? Daylight check, latest start time and point of no return for GPX hiking and cycling routes. Zero dependencies, runs offline.",
+  "type": "module",
+  "main": "./src/index.js",
+  "exports": {
+    ".": "./src/index.js"
+  },
+  "bin": {
+    "avant-la-nuit": "./bin/avant-la-nuit.js"
+  },
+  "files": [
+    "src",
+    "bin",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "test": "node --test test/*.test.js",
+    "check": "node --check src/*.js bin/*.js web/*.js",
+    "start": "node web/serve.js"
+  },
+  "engines": {
+    "node": ">=18.3"
+  },
+  "keywords": [
+    "gpx",
+    "hiking",
+    "cycling",
+    "sunset",
+    "daylight",
+    "outdoor-safety",
+    "trail",
+    "bikepacking",
+    "tobler",
+    "openstreetmap"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/seoilluminati/avant-la-nuit.git"
+  },
+  "homepage": "https://seoilluminati.github.io/avant-la-nuit/",
+  "bugs": "https://github.com/seoilluminati/avant-la-nuit/issues",
+  "license": "MIT"
+}

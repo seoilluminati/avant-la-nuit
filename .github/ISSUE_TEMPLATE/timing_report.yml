@@ -1,0 +1,28 @@
+name: Real-world timing report
+description: Compare the estimate with what really happened, to calibrate the models
+labels: [calibration]
+body:
+  - type: dropdown
+    id: activity
+    attributes:
+      label: Activity
+      options: [hike, trail, road, gravel, mtb]
+    validations:
+      required: true
+  - type: input
+    id: estimate
+    attributes:
+      label: Estimated duration (and pace setting used)
+    validations:
+      required: true
+  - type: input
+    id: actual
+    attributes:
+      label: Real duration, stops included
+    validations:
+      required: true
+  - type: textarea
+    id: context
+    attributes:
+      label: Context
+      description: Terrain, load, group size, weather. Attach the GPX if possible.

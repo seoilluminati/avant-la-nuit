@@ -1,0 +1,21 @@
+name: Bug report
+description: Something is wrong or crashes
+labels: [bug]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened?
+      description: What you did, what you expected, what you got.
+    validations:
+      required: true
+  - type: input
+    id: where
+    attributes:
+      label: Where
+      description: Web app (browser and device) or library/CLI (runtime and version)
+  - type: textarea
+    id: gpx
+    attributes:
+      label: GPX file
+      description: Attach the GPX if you can (remove anything private first).
